@@ -188,14 +188,14 @@ const App = () => {
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Container sx={{ pt: 2 }}>
-          <Grid sx={{ py: 2 }} container spacing={2}>
-            <Grid sx={{ pt: 2 }} item xs={6}>
+          <Grid container sx={{ py: 2 }} spacing={2}>
+            <Grid sx={{ pt: 2 }} item xs={12} md={6}>
               <PriceInput
                 itemData={formPriceInput}
                 onFormPriceInputChange={formPriceInputChange}
               />
             </Grid>
-            <Grid sx={{ pt: 2 }} item xs={6}>
+            <Grid sx={{ pt: 2 }} item xs={12} md={6}>
               <AgeGroupSelect
                 itemData={formAgeGroup}
                 onAgeGroupSelectChange={formAgeGroupSelectChange}
@@ -204,7 +204,7 @@ const App = () => {
           </Grid>
           {formAgeGroupPriceList.map((item, index) => {
             return (
-              <Grid container sx={{ pt: 2 }} spacing={2} key={ item.id}>
+              <Grid container sx={{ pt: 2 }} spacing={2} key={item.id}>
                 <Grid item xs={12} md={index > 0 ? 6 : 12}>
                   <Typography
                     sx={{ px: 1, borderRadius: 1 }}
@@ -244,10 +244,12 @@ const App = () => {
             );
           })}
           <Grid container sx={{ pt: 2 }} spacing={2}>
-            <Button variant="outlined" onClick={addGroupUI}>
-              <AddIcon />
-              {i18n.tw.newSetting}
-            </Button>
+            <Grid sx={{ pt: 2 }} item xs={12} align="left">
+              <Button variant="outlined" onClick={addGroupUI}>
+                <AddIcon />
+                {i18n.tw.newSetting}
+              </Button>
+            </Grid>
           </Grid>
         </Container>
       </ThemeProvider>

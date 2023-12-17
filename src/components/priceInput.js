@@ -52,7 +52,7 @@ const priceInput = ({ itemData, onFormPriceInputChange, itemKey }) => {
             {i18n.tw.priceInput.TWD}
           </Typography>
           <TextField
-            sx={{ background: grey[100], borderRadius: 1 }}
+            sx={{ background: grey[50], borderRadius: 1 }}
             fullWidth
             placeholder={i18n.tw.priceInput.variant}
             variant="outlined"
@@ -71,8 +71,13 @@ const priceInput = ({ itemData, onFormPriceInputChange, itemKey }) => {
         )}
       </CardContent>
       {itemData.hit && (
-        <CardActions sx={{  flexDirection: 'row-reverse' }}>
-          <Typography sx={{ px: 1, borderRadius: 1 }} color="text.secondary"  align="right">
+        <CardActions sx={{ flexDirection: "row-reverse" }}>
+          <Typography
+            sx={{ px: 1, borderRadius: 1 }}
+            color="text.secondary"
+            variant="body2"
+            align="right"
+          >
             {i18n.tw.priceInput.hit}
           </Typography>
         </CardActions>

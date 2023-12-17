@@ -48,6 +48,7 @@ const ageGroupSelect = ({ itemData, onAgeGroupSelectChange, itemKey }) => {
           sx={{ fontSize: 14, py: 2 }}
           color="text.secondary"
           align="left"
+          variant="h6"
         >
           {itemData.title}
         </Typography>
@@ -62,7 +63,7 @@ const ageGroupSelect = ({ itemData, onAgeGroupSelectChange, itemKey }) => {
         >
           <Select
             value={itemData.value[0]}
-            sx={{ background: grey[100], borderRadius: 1, borderLeft: 0 }}
+            sx={{ background: grey[50], borderRadius: 1, borderLeft: 0 }}
             fullWidth
             variant="outlined"
             defaultValue="20"
@@ -73,7 +74,7 @@ const ageGroupSelect = ({ itemData, onAgeGroupSelectChange, itemKey }) => {
           <Typography sx={{ px: 2, borderRadius: 1 }}>~</Typography>
           <Select
             value={itemData.value[1]}
-            sx={{ background: grey[200], borderRadius: 1, borderLeft: 0 }}
+            sx={{ background: grey[50], borderRadius: 1, borderLeft: 0 }}
             fullWidth
             variant="outlined"
             defaultValue="20"
@@ -92,8 +93,10 @@ const ageGroupSelect = ({ itemData, onAgeGroupSelectChange, itemKey }) => {
           </Typography>
         )}
       </CardContent>
-      {itemData.hit && (
-        <CardActions sx={{ flexDirection: "row-reverse" }}>
+      <CardActions
+        sx={{ flexDirection: "row-reverse", py: itemData.hit ? 0 : 2.2 }}
+      >
+        {itemData.hit && (
           <Typography
             sx={{ px: 1, borderRadius: 1 }}
             color="text.secondary"
@@ -101,8 +104,8 @@ const ageGroupSelect = ({ itemData, onAgeGroupSelectChange, itemKey }) => {
           >
             {i18n.tw.priceInput.hit}
           </Typography>
-        </CardActions>
-      )}
+        )}
+      </CardActions>
     </Card>
   );
 };
