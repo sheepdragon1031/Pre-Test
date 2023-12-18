@@ -15,7 +15,7 @@ const i18 = {
     },
     titleList: '價格設定-',
     newSetting : '新增價格設定',
-    deleSetting: '刪除'
+    deleSetting: '移除'
   },
 };
 export default i18;
