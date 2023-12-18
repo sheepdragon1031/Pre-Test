@@ -11,8 +11,6 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { teal } from "@mui/material/colors";
-
 const darkTheme = createTheme({
   palette: {},
 });
@@ -24,21 +22,44 @@ const getNumberIntervals = (input) => {
   const overlap = [];
   const notInclude = [];
 
-  for (let i = 0; i < input.length; i++) {
-    for (let j = i + 1; j < input.length; j++) {
-      if (input[i][0] <= input[j][1] && input[i][1] >= input[j][0]) {
-        if (input[j][0] === input[j][1]) {
-          break;
+  input.sort((a, b) => a[0] - b[0]);
+  let startVal = 0;
+  let endVal = 0;
+  if (input.length > 1) {
+    startVal = input[0][0];
+    endVal = input[0][1];
+
+    for (let i = 1; i < input.length; i++) {
+      const flag = input[i];
+      const next = input[i + 1];
+      if (next !== undefined) {
+        if (next[0] >= endVal) {
+          if (endVal >= startVal) {
+            overlap.push([startVal, endVal]);
+          }
+          startVal = next[0];
+          endVal = next[1];
         }
-        overlap.push([
-          Math.max(input[i][0], input[j][0]),
-          Math.min(input[i][1], input[j][1]),
-        ]);
+        if (flag[0] >= startVal) {
+          startVal = Math.max(flag[0], startVal);
+        }
+        if (flag[1] <= endVal) {
+          endVal = Math.min(flag[1], endVal);
+        }
+      } else {
+        if (flag[0] >= startVal) {
+          startVal = Math.max(flag[0], startVal);
+        }
+        if (flag[1] <= endVal) {
+          endVal = Math.min(flag[1], endVal);
+        }
+        overlap.push([startVal, endVal]);
       }
     }
+  } else {
+    overlap.push(input);
   }
 
-  input.sort((a, b) => a[0] - b[0]);
   const setInclude = new Set([]);
   for (let i = 0; i < input.length; i++) {
     for (let j = input[i][0]; j <= input[i][1]; j++) {
@@ -175,6 +196,7 @@ const App = () => {
             getBack.overlap.length > 0 ? i18n.tw.rules.ago.overlap : "";
         });
       }
+      console.log(getBack);
       setformAgeGroupPriceList(tempData);
     }
   }, [count]);
@@ -212,7 +234,7 @@ const App = () => {
                 {index > 0 && (
                   <Grid item xs={12} md={6} align="right">
                     <Button
-                      color="error"
+                      variant="outlined"
                       onClick={() => deleGroupUI(index)}
                     >
                       <DeleteIcon />
@@ -240,15 +262,7 @@ const App = () => {
           })}
           <Grid container sx={{ pt: 2 }} spacing={2}>
             <Grid sx={{ pt: 2 }} item xs={12} align="left">
-              <Button
-                sx={{
-                  border: `1px solid ${teal[400]}`,
-                  color: teal[400]
-                }}
-                variant="outlined"
-                disabled={addRow}
-                onClick={addGroupUI}
-              >
+              <Button variant="outlined" disabled={addRow} onClick={addGroupUI}>
                 <AddIcon />
                 {i18n.tw.newSetting}
               </Button>
