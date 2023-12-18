@@ -31,21 +31,27 @@ const getNumberIntervals = (input) => {
 
     for (let i = 1; i < input.length; i++) {
       const flag = input[i];
+      const next = input[i + 1];
+      if (next !== undefined) {
+        if (next[0] > endVal) {
+          if (endVal >= startVal) overlap.push([startVal, endVal]);
+          startVal = next[0];
+          endVal = next[1];
+        }
+      } else {
+        if (flag[0] >= startVal) {
+          startVal = Math.max(flag[0], startVal);
+        }
+        if (flag[1] <= endVal) {
+          endVal = Math.min(flag[1], endVal);
+        }
+        overlap.push([startVal, endVal]);
+      }
       if (flag[0] >= startVal) {
         startVal = Math.max(flag[0], startVal);
       }
       if (flag[1] <= endVal) {
         endVal = Math.min(flag[1], endVal);
-      }
-      const next = input[i + 1];
-      if (next !== undefined) {
-        if (next[0] > endVal) {
-          overlap.push([startVal, endVal]);
-          startVal = next[0];
-          endVal = next[1];
-        }
-      } else if (startVal <= endVal) {
-        overlap.push([startVal, endVal]);
       }
     }
   } else {
@@ -93,6 +99,7 @@ console.log(
 
 const App = () => {
   const [count, setCount] = useState(0);
+  const [addRow, setAddRow] = useState(false);
   const [formPriceInput, setFormPriceInput] = useState({
     title: i18n.tw.eCheckInPriceDay,
     value: 0,
@@ -176,10 +183,15 @@ const App = () => {
     if (PriceList.every((subArray) => subArray.every(isNum))) {
       const getBack = getNumberIntervals(PriceList);
       let tempData = [...formAgeGroupPriceList];
-      tempData.forEach((item) => {
-        item.ageGroup.error =
-          getBack.overlap.length > 0 ? i18n.tw.rules.ago.overlap : "";
-      });
+      if (tempData.length > 0) {
+        setAddRow(getBack.notInclude.length < 1);
+      }
+      if (tempData.length > 1) {
+        tempData.forEach((item) => {
+          item.ageGroup.error =
+            getBack.overlap.length > 0 ? i18n.tw.rules.ago.overlap : "";
+        });
+      }
       setformAgeGroupPriceList(tempData);
     }
   }, [count]);
@@ -245,7 +257,7 @@ const App = () => {
           })}
           <Grid container sx={{ pt: 2 }} spacing={2}>
             <Grid sx={{ pt: 2 }} item xs={12} align="left">
-              <Button variant="outlined" onClick={addGroupUI}>
+              <Button variant="outlined" disabled={addRow} onClick={addGroupUI}>
                 <AddIcon />
                 {i18n.tw.newSetting}
               </Button>
