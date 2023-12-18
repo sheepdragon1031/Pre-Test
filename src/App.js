@@ -33,10 +33,18 @@ const getNumberIntervals = (input) => {
       const flag = input[i];
       const next = input[i + 1];
       if (next !== undefined) {
-        if (next[0] > endVal) {
-          if (endVal >= startVal) overlap.push([startVal, endVal]);
+        if (next[0] >= endVal) {
+          if (endVal >= startVal) {
+            overlap.push([startVal, endVal]);
+          }
           startVal = next[0];
           endVal = next[1];
+        }
+        if (flag[0] >= startVal) {
+          startVal = Math.max(flag[0], startVal);
+        }
+        if (flag[1] <= endVal) {
+          endVal = Math.min(flag[1], endVal);
         }
       } else {
         if (flag[0] >= startVal) {
@@ -46,12 +54,6 @@ const getNumberIntervals = (input) => {
           endVal = Math.min(flag[1], endVal);
         }
         overlap.push([startVal, endVal]);
-      }
-      if (flag[0] >= startVal) {
-        startVal = Math.max(flag[0], startVal);
-      }
-      if (flag[1] <= endVal) {
-        endVal = Math.min(flag[1], endVal);
       }
     }
   } else {
@@ -139,11 +141,13 @@ const App = () => {
       },
     ]);
     setGroupNumber(groupNumber + 1);
+    setCount(count + 1);
   };
   const deleGroupUI = (key) => {
     let tempData = [...formAgeGroupPriceList];
     tempData.splice(key, 1);
     setformAgeGroupPriceList(tempData);
+    setCount(count + 1);
   };
   const formPriceInputChange = (e, key) => {
     if (key > -1) {
@@ -192,6 +196,7 @@ const App = () => {
             getBack.overlap.length > 0 ? i18n.tw.rules.ago.overlap : "";
         });
       }
+      console.log(getBack);
       setformAgeGroupPriceList(tempData);
     }
   }, [count]);
